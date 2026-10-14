@@ -27,8 +27,9 @@ func _ready() -> void:
 
 	var layer := CanvasLayer.new()
 	add_child(layer)
-	UI.make_button(layer, tr("PLAY"), Vector2(540, 340), 200, 52, _on_play)
-	UI.make_button(layer, tr("QUIT"), Vector2(540, 410), 200, 52, _on_quit)
+	UI.make_button(layer, tr("PLAY"),     Vector2(540, 340), 200, 52, _on_play)
+	UI.make_button(layer, tr("SETTINGS"), Vector2(540, 406), 200, 46, _on_settings, "secondary")
+	UI.make_button(layer, tr("QUIT"),     Vector2(540, 464), 200, 46, _on_quit,     "secondary")
 
 
 func _process(delta: float) -> void:
@@ -73,6 +74,10 @@ func _draw_decor_balls() -> void:
 
 func _on_play() -> void:
 	get_tree().change_scene_to_file("res://scenes/LevelSelect.tscn")
+
+
+func _on_settings() -> void:
+	get_tree().change_scene_to_file("res://scenes/Settings.tscn")
 
 
 func _on_quit() -> void:

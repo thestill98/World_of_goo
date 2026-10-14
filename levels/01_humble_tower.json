@@ -80,5 +80,20 @@
   ],
   "radius": 46
  },
- "target": 4
+ "target": 4,
+ "hazards": [
+  {"type": "gear",    "pos": [340, 330], "radius": 36},
+  {"type": "saw",     "pos": [640, 310], "radius": 28, "speed": 2.2},
+  {"type": "spinner", "pos": [200, 400], "radius": 30,
+   "path": [[200, 400], [480, 400]], "move_speed": 90}
+ ],
+ "decor": [
+  {"type": "bush_large",  "x": 180,  "y": 120},
+  {"type": "bush_small",  "x": 420,  "y": 120, "flip": true},
+  {"type": "bush_small",  "x": 1100, "y": 120},
+  {"type": "rock_small",  "x": 620,  "y": 120, "scale": 0.9},
+  {"type": "flower",      "x": 310,  "y": 120, "scale": 0.85},
+  {"type": "mushroom",    "x": 730,  "y": 120, "scale": 0.8},
+  {"type": "bush_large",  "x": 1240, "y": 120, "flip": true, "scale": 0.85}
+ ]
 }

@@ -1,0 +1,36 @@
+{
+ "id": "twin_peaks",
+ "name": "Twin Peaks",
+ "order": 6,
+ "hint": "Build a bridge between the two hills to reach the pipe.",
+ "world": {"width": 1280, "height": 720},
+ "gravity": 900.0,
+ "terrain": [
+  {"polyline": [[0, 120], [1280, 120]], "fill": true},
+  {"polyline": [[110, 120], [210, 265], [430, 265], [530, 120]], "fill": true},
+  {"polyline": [[750, 120], [850, 340], [1090, 340], [1190, 120]], "fill": true}
+ ],
+ "obstacles": [],
+ "nodes": [
+  {"kind": "ivy", "pos": [255, 280], "anchor": true},
+  {"kind": "ivy", "pos": [385, 280], "anchor": true},
+  {"kind": "ivy", "pos": [320, 325]}
+ ],
+ "strands": [[0, 1], [0, 2], [1, 2]],
+ "free_goo": [
+  {"kind": "ivy", "count": 14, "x": [120, 1100]}
+ ],
+ "pipe": {"pos": [960, 450], "radius": 46},
+ "target": 5,
+ "ocd": {"target": 9},
+ "hazards": [],
+ "decor": [
+  {"type": "bush_small", "x": 150, "y": 265},
+  {"type": "flower",     "x": 310, "y": 265, "scale": 0.9},
+  {"type": "bush_large", "x": 490, "y": 265, "flip": true},
+  {"type": "rock_small", "x": 660, "y": 120, "scale": 0.85},
+  {"type": "mushroom",   "x": 820, "y": 340},
+  {"type": "bush_small", "x": 1040, "y": 340, "flip": true},
+  {"type": "flower",     "x": 1200, "y": 120, "scale": 0.8}
+ ]
+}

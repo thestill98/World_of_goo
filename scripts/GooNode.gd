@@ -23,6 +23,12 @@ var is_source: bool = true
 
 var _drag_target: Vector2 = Vector2.ZERO
 
+# idle animation state
+var _idle_t: float     = 0.0
+var _blink_t: float    = 0.0  # set randomly in setup
+var _blinking: bool    = false
+var _blink_close: float = 0.0
+
 
 func setup(id: int, k: String, pos: Vector2, state: String) -> void:
 	goo_id = id
@@ -37,8 +43,12 @@ func setup(id: int, k: String, pos: Vector2, state: String) -> void:
 	shape.shape = circle
 	add_child(shape)
 
-	mass = goo_type.mass
+	mass    = goo_type.mass
+	z_index = 2  # above terrain (0) and decor (1)
 	_set_state(state)
+
+	# stagger blink timers so all balls don't blink simultaneously
+	_blink_t = randf_range(1.5, 5.0) + float(id) * 0.37
 
 
 func _set_state(new_state: String) -> void:
@@ -99,6 +109,22 @@ func begin_suck(from_pos: Vector2, pipe: Vector2) -> void:
 	freeze = false
 
 
+func _process(delta: float) -> void:
+	if goo_state in ["dead", "sucked", "sucked_done"]:
+		return
+	_idle_t += delta
+	_blink_t -= delta
+	if _blinking:
+		_blink_close -= delta
+		if _blink_close <= 0.0:
+			_blinking = false
+			_blink_t  = randf_range(2.5, 6.5)
+	elif _blink_t <= 0.0:
+		_blinking   = true
+		_blink_close = 0.12
+	queue_redraw()
+
+
 func _physics_process(delta: float) -> void:
 	if goo_state == "sucked":
 		suck_timer += delta
@@ -125,6 +151,13 @@ func _draw() -> void:
 
 	var is_dark := col.get_luminance() < 0.08
 
+	# Idle bob — visual only, does not affect physics position
+	var bob_y := 0.0
+	if goo_state in ["free", "node", "anchor"]:
+		bob_y = sin(_idle_t * 1.7 + float(goo_id) * 0.85) * 1.3
+	if bob_y != 0.0:
+		draw_set_transform(Vector2(0.0, bob_y), 0.0, Vector2.ONE)
+
 	# Drag petals — drawn first so ball renders on top
 	if goo_state == "drag":
 		_draw_drag_petals(r, col)
@@ -143,7 +176,15 @@ func _draw() -> void:
 	draw_arc(Vector2.ZERO, r, 0.0, TAU, 40, col.darkened(0.40), 1.5)
 
 	if goo_state in ["free", "node", "anchor", "drag"]:
-		_draw_eyes(r, col, is_dark)
+		# look direction offset (eyes follow velocity)
+		var look := Vector2.ZERO
+		if linear_velocity.length() > 20.0:
+			look = linear_velocity.normalized() * r * 0.10
+		_draw_eyes(r, col, is_dark, look)
+
+	# reset bob transform
+	if bob_y != 0.0:
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 
 func _draw_drag_petals(r: float, col: Color) -> void:
@@ -157,30 +198,36 @@ func _draw_drag_petals(r: float, col: Color) -> void:
 		draw_circle(dir * r * 1.80, r * 0.30, petal_col)
 
 
-func _draw_eyes(r: float, base_col: Color, is_dark: bool) -> void:
+func _draw_eyes(r: float, base_col: Color, is_dark: bool, look: Vector2 = Vector2.ZERO) -> void:
 	if is_dark:
-		# Minimalist: small dots, high up, close together — as in reference image
 		var eye_r   := r * 0.13
 		var eye_sep := r * 0.17
 		var eye_y   := -r * 0.28
 		for side in [-1.0, 1.0]:
-			var ep := Vector2(side * eye_sep, eye_y)
-			draw_circle(ep, eye_r, Color.WHITE)
-			draw_circle(ep + Vector2(eye_r * 0.10, eye_r * 0.15), eye_r * 0.55, Color(0.05, 0.05, 0.08))
-			draw_circle(ep + Vector2(-eye_r * 0.28, -eye_r * 0.28), eye_r * 0.22, Color(1.0, 1.0, 1.0, 0.90))
+			var ep := Vector2(side * eye_sep, eye_y) + look
+			if _blinking:
+				# closed eye — thin horizontal line
+				draw_line(ep + Vector2(-eye_r, 0), ep + Vector2(eye_r, 0), Color.WHITE, 1.5)
+			else:
+				draw_circle(ep, eye_r, Color.WHITE)
+				draw_circle(ep + Vector2(eye_r * 0.10, eye_r * 0.15), eye_r * 0.55, Color(0.05, 0.05, 0.08))
+				draw_circle(ep + Vector2(-eye_r * 0.28, -eye_r * 0.28), eye_r * 0.22, Color(1.0, 1.0, 1.0, 0.90))
 	else:
-		# Kawaii: larger expressive eyes for colored balls
 		var eye_r   := r * 0.30
 		var eye_sep := r * 0.33
 		var eye_y   := -r * 0.10
 		var iris_col := base_col.darkened(0.05).lerp(Color(0.2, 0.4, 0.9), 0.25)
 		for side in [-1.0, 1.0]:
-			var ep := Vector2(side * eye_sep, eye_y)
-			draw_circle(ep, eye_r, Color.WHITE)
-			draw_circle(ep + Vector2(0.0, eye_r * 0.10), eye_r * 0.66, iris_col)
-			draw_circle(ep + Vector2(eye_r * 0.08, eye_r * 0.16), eye_r * 0.38, Color(0.05, 0.05, 0.08))
-			draw_circle(ep + Vector2(-eye_r * 0.24, -eye_r * 0.22), eye_r * 0.17, Color(1.0, 1.0, 1.0, 0.92))
-			draw_arc(ep, eye_r, 0.0, TAU, 24, Color(0.15, 0.15, 0.20, 0.55), 1.0)
+			var ep := Vector2(side * eye_sep, eye_y) + look
+			if _blinking:
+				# closed eye — arc
+				draw_arc(ep, eye_r * 0.72, PI, TAU, 12, Color.WHITE, 2.5)
+			else:
+				draw_circle(ep, eye_r, Color.WHITE)
+				draw_circle(ep + Vector2(0.0, eye_r * 0.10), eye_r * 0.66, iris_col)
+				draw_circle(ep + Vector2(eye_r * 0.08, eye_r * 0.16), eye_r * 0.38, Color(0.05, 0.05, 0.08))
+				draw_circle(ep + Vector2(-eye_r * 0.24, -eye_r * 0.22), eye_r * 0.17, Color(1.0, 1.0, 1.0, 0.92))
+				draw_arc(ep, eye_r, 0.0, TAU, 24, Color(0.15, 0.15, 0.20, 0.55), 1.0)
 
 
 var alive: bool:

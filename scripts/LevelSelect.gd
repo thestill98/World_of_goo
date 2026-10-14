@@ -6,6 +6,9 @@ const LEVEL_FILES := [
 	"res://levels/03_balloon_lift.json",
 	"res://levels/04_burn_the_wall.json",
 	"res://levels/05_sticky_wall.json",
+	"res://levels/06_twin_peaks.json",
+	"res://levels/07_sky_high.json",
+	"res://levels/08_gear_gauntlet.json",
 ]
 
 var _HILLS_FAR := PackedVector2Array([
@@ -29,7 +32,8 @@ func _ready() -> void:
 	add_child(layer)
 
 	_build_cards(layer)
-	UI.make_button(layer, tr("BACK"), Vector2(30, 660), 120, 44, _on_back, "secondary")
+	UI.make_button(layer, tr("BACK"),     Vector2(30,   660), 120, 44, _on_back,     "secondary")
+	UI.make_button(layer, tr("SETTINGS"), Vector2(1130, 660), 120, 44, _on_settings, "secondary")
 
 
 func _load_level_data() -> void:
@@ -58,19 +62,29 @@ func _build_cards(parent: Node) -> void:
 
 func _make_card(parent: Node, lvl: Dictionary, idx: int,
 				x: int, y: int, w: int, h: int) -> void:
+	var level_id: String = lvl.get("id", "")
+	var done: bool     = GameState.is_complete(level_id)
+	var ocd_done: bool = GameState.is_ocd(level_id)
+
 	var btn: Button = UI.make_button(parent, "", Vector2(x, y), w, h,
 									 _on_level.bind(idx), "card")
 	btn.tooltip_text = lvl.get("name", "")
+
+	# completed levels get a green border tint via modulate
+	if done:
+		btn.modulate = Color(0.75, 1.10, 0.80)
 
 	var vbox := VBoxContainer.new()
 	vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	vbox.add_theme_constant_override("separation", 6)
 
 	var num_lbl := Label.new()
-	num_lbl.text                 = "%02d" % (idx + 1)
+	var marker := " ★" if ocd_done else (" ✓" if done else "")
+	num_lbl.text = "%02d%s" % [idx + 1, marker]
 	num_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	num_lbl.add_theme_font_size_override("font_size", 36)
-	num_lbl.add_theme_color_override("font_color", Color(0.85, 0.87, 0.92))
+	num_lbl.add_theme_color_override("font_color",
+		Color(0.45, 0.95, 0.55) if done else Color(0.85, 0.87, 0.92))
 	num_lbl.layout_mode = 2
 
 	var name_lbl := Label.new()
@@ -106,3 +120,7 @@ func _on_level(idx: int) -> void:
 
 func _on_back() -> void:
 	get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
+
+
+func _on_settings() -> void:
+	get_tree().change_scene_to_file("res://scenes/Settings.tscn")

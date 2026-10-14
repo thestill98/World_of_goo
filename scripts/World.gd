@@ -10,6 +10,7 @@ const PICK_RADIUS := 24.0
 
 signal event_fired(ev: String)
 signal status_changed(s: String)
+signal goo_smashed(pos: Vector2, color: Color)
 
 var level: LevelData
 var level_root: Node2D
@@ -28,6 +29,8 @@ var status: String = "playing"
 var final_balls: int = 0
 var dragging: GooNode = null
 var history: Array = []
+
+var hazard_nodes: Array = []  # Array[HazardNode] — set by Game after HazardLayer.setup()
 
 var _win_timer: float = -1.0
 var _still_timer: float = 0.0
@@ -513,6 +516,33 @@ func _hazards(delta: float) -> void:
 			g.burn_timer -= delta
 			if g.burn_timer <= 0.0:
 				_kill(g, "burn")
+				continue
+		# mechanical hazard collision
+		for hazard in hazard_nodes:
+			if g.goo_state == "dead":
+				break
+			if not is_instance_valid(hazard):
+				continue
+			var goo_r := float(g.goo_type.get("radius", 12.0))
+			if g.position.distance_to(hazard.position) <= hazard.kill_radius() + goo_r:
+				_kill_by_hazard(g, hazard)
+				break
+
+
+func _kill_by_hazard(g: GooNode, _hazard: HazardNode) -> void:
+	if g.goo_state == "dead":
+		return
+	var pos   := g.position
+	var color: Color = g.goo_type.get("color", Color(0.15, 0.15, 0.18))
+	for s in g.strands.duplicate():
+		_remove_strand(s, "")
+	if g == dragging:
+		dragging = null
+	g.set_goo_state("dead")
+	g.queue_redraw()
+	g.hide()
+	emit_signal("goo_smashed", pos, color)
+	emit_signal("event_fired", "smash")
 
 
 func _kill(g: GooNode, ev: String) -> void:

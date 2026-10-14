@@ -1,0 +1,38 @@
+{
+ "id": "gear_gauntlet",
+ "name": "Gear Gauntlet",
+ "order": 8,
+ "hint": "The gears block the direct path. Find the gap and thread your structure through.",
+ "world": {"width": 1280, "height": 720},
+ "gravity": 900.0,
+ "terrain": [
+  {"polyline": [[0, 120], [1280, 120]], "fill": true},
+  {"polyline": [[80, 120], [165, 215], [335, 215], [420, 120]], "fill": true}
+ ],
+ "obstacles": [],
+ "nodes": [
+  {"kind": "bit", "pos": [190, 230], "anchor": true},
+  {"kind": "bit", "pos": [310, 230], "anchor": true},
+  {"kind": "bit", "pos": [250, 275]}
+ ],
+ "strands": [[0, 1], [0, 2], [1, 2]],
+ "free_goo": [
+  {"kind": "bit", "count": 16, "x": [90, 860]}
+ ],
+ "pipe": {"pos": [940, 430], "radius": 46},
+ "target": 6,
+ "ocd": {"target": 10},
+ "hazards": [
+  {"type": "gear",    "pos": [490, 270], "radius": 40},
+  {"type": "gear",    "pos": [660, 365], "radius": 35},
+  {"type": "saw",     "pos": [790, 455], "radius": 26, "speed": 2.0},
+  {"type": "spinner", "pos": [570, 195], "radius": 22,
+   "path": [[570, 195], [820, 195]], "move_speed": 100}
+ ],
+ "decor": [
+  {"type": "rock_small", "x": 140,  "y": 215, "scale": 0.8},
+  {"type": "bush_small", "x": 400,  "y": 215, "flip": true},
+  {"type": "mushroom",   "x": 1120, "y": 120, "scale": 0.85},
+  {"type": "flower",     "x": 1220, "y": 120}
+ ]
+}

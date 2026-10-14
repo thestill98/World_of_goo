@@ -1,0 +1,34 @@
+{
+ "id": "sky_high",
+ "name": "Sky High",
+ "order": 7,
+ "hint": "Balloons lift the structure upward. Mix them with ivy to guide your tower.",
+ "world": {"width": 1280, "height": 720},
+ "gravity": 900.0,
+ "terrain": [
+  {"polyline": [[0, 120], [1280, 120]], "fill": true}
+ ],
+ "obstacles": [],
+ "nodes": [
+  {"kind": "ivy", "pos": [560, 135], "anchor": true},
+  {"kind": "ivy", "pos": [680, 135], "anchor": true},
+  {"kind": "ivy", "pos": [620, 190]}
+ ],
+ "strands": [[0, 1], [0, 2], [1, 2]],
+ "free_goo": [
+  {"kind": "ivy",     "count": 16, "x": [80, 1200]},
+  {"kind": "balloon", "count": 6,  "x": [200, 1080]}
+ ],
+ "pipe": {"pos": [640, 650], "radius": 46},
+ "target": 8,
+ "ocd": {"target": 14},
+ "hazards": [],
+ "decor": [
+  {"type": "bush_large",  "x": 80,   "y": 120},
+  {"type": "bush_small",  "x": 320,  "y": 120, "scale": 0.85},
+  {"type": "flower",      "x": 490,  "y": 120},
+  {"type": "mushroom",    "x": 740,  "y": 120, "scale": 0.9},
+  {"type": "rock_small",  "x": 960,  "y": 120, "flip": true},
+  {"type": "bush_large",  "x": 1160, "y": 120, "flip": true, "scale": 0.9}
+ ]
+}

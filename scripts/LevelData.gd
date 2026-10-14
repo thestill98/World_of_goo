@@ -16,6 +16,9 @@ var pipe_pos: Vector2 = Vector2(640, 360)
 var pipe_radius: float = 46.0
 var target: int = 1
 var ocd: Dictionary = {}
+var ocd_target: int = 0  # 0 = no OCD challenge; set from ocd.target in JSON
+var decor: Array = []
+var hazards: Array = []
 
 
 static func load_file(path: String) -> LevelData:
@@ -52,7 +55,10 @@ static func from_dict(d: Dictionary) -> LevelData:
 	ld.pipe_pos = Vector2(float(pp[0]), ld.flip_y(float(pp[1])))
 	ld.pipe_radius = float(pipe.get("radius", 46.0))
 	ld.target = int(d.get("target", 1))
-	ld.ocd = d.get("ocd", {})
+	ld.ocd        = d.get("ocd", {})
+	ld.ocd_target = int(ld.ocd.get("target", 0))
+	ld.decor      = d.get("decor", [])
+	ld.hazards    = d.get("hazards", [])
 	return ld
 
 

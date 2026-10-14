@@ -4,6 +4,82 @@ Items de implementat. Adaugă cu "note it", implementează când zici tu.
 
 ---
 
+## Mecanisme hazard ✓ FACUT (2026-10-14)
+
+Gear, saw, spinner — distrug bile la contact, firele se rup.
+Particule slime la kill. Plasare în JSON (pos/path/speed/radius).
+Nivel 01: 3 hazarduri de test (gear, saw, spinner mobil).
+
+---
+
+## Decoruri (iarbă, boschete, etc.) ✓ FACUT
+
+Auto-scatter iarbă pe suprafețe. Manual în JSON pentru boschete/flori/stânci/ciuperci.
+Animație wind sway. PNG generate cu Pillow.
+
+---
+
+## Save system ✓ FACUT (2026-10-14)
+
+`user://save.json` cu lista de level_id completate.
+`GameState.mark_complete(id)` + `is_complete(id)`.
+LevelSelect: carduri completate au ✓ verde.
+Salvare automată la win.
+
+---
+
+## Debug overlay ✓ FACUT (2026-10-14)
+
+Tasta D: panel colț dreapta-jos cu ultimele 4 evenimente (PICK, ATTACH, DROP, BREAK, SMASH).
+Fiecare eveniment dispare după 1.5s.
+
+---
+
+## Git ✓ FACUT (sesiunea anterioară)
+
+Push la https://github.com/thestill98/World_of_goo.git
+
+---
+
+## CHANGELOG + version ✓ FACUT (2026-10-14)
+
+`version.gd` (VERSION = "0.2.0") + `CHANGELOG.md`.
+
+---
+
+## Playtesting bot ✓ FACUT (2026-10-14) — NETESTAT
+
+`tools/bot_solver.gd` — rulat cu:
+```
+godot --headless --script tools/bot_solver.gd -- levels/01_humble_tower.json
+```
+Strategie greedy: bila liberă cea mai apropiată de structură.
+⚠️ Netestat — poate necesita ajustări dacă `SceneTree` nu inițializează
+corect `World2D` în modul headless (physics raycast poate eșua).
+
+---
+
+## WinOverlay + Game polish ✓ FACUT (2026-10-14)
+
+- WinOverlay integrat: colectate, timp, OCD star, butoane Next/Retry/Menu
+- GameState.mark_ocd() la win când collected >= ocd_target
+- Celebrare: 35 particule colorate din pipe la win
+- Camera pan la marginea ecranului când tragi o bilă (EDGE_MARGIN=80, speed=380px/s)
+- Animație pipe pulsată (sin-based ring, mai intens când pipe e conectat)
+- Hint text pe nivelul 1 ("Drag a goo ball..."): 8s sau ascuns la primul ATTACH
+- Animație clipeală + direcție privire pentru GooNode (_draw_eyes cu look: Vector2)
+
+---
+
+## Niveluri noi ✓ FACUT (2026-10-14)
+
+Adăugate nivelurile 06, 07, 08:
+- 06 Twin Peaks: 2 dealuri, pod între ele cu ivy, pipe pe deal drept
+- 07 Sky High: turn foarte înalt, balloon goo ajută la ridicare
+- 08 Gear Gauntlet: gear/saw/spinner blochează drumul, calea prin gap-ul dintre ele
+
+---
+
 ## Pipe logic (prioritate medie)
 
 **Pipe activ condiționat de structură:**
@@ -13,50 +89,8 @@ Items de implementat. Adaugă cu "note it", implementează când zici tu.
 - Stabilitate: structura trebuie să rămână în proximitate (nu e suficient să treci prin zonă).
 - Bile aruncate liber în pipe → colectate direct (ca "collected"), fără a fi nevoie să fie în structură.
 - Vizual: pipe-ul să aibă o stare activă/inactivă clară (culoare, glow, animație).
-
----
-
-## On-screen debug overlay
-
-- Panel mic (colț dreapta-jos) cu ultimele 3-4 evenimente (PICK, ATTACH, DROP, BREAK).
-- Fiecare linie dispare după ~1.5s.
-- Toggle cu tasta D.
-- După ce merge, scoate print-urile verbose din consolă.
-
----
-
-## Git — version control local
-
-- `git init` în `world-of-bloop/`, `.gitignore` pentru `.godot/`, `export/`, `*.uid`.
-- Commit după fiecare sesiune de lucru (sau după fiecare feature stabil).
-- Nu e nevoie de remote/GitHub deocamdată — doar istoricul local salvează munca.
-
----
-
-## Save system
-
-- Salvează nivelele completate (listă de `level_id`-uri) în `user://save.json`.
-- LevelSelect arată nivele completate diferit (check, stea, culoare).
-- GameState expune `mark_complete(level_id)` și `is_complete(level_id)`.
-- Nu salvăm scor sau timp deocamdată — doar "completat / nu".
-
----
-
-## Playtesting bot (Godot)
-
-- Script headless `tools/bot_solver.gd` care rulează un nivel fără renderer.
-- Botul aplică strategia greedy: ia bila liberă cea mai apropiată de pipe, o atașează.
-- Raport: nivel rezolvat în N mișcări / blocat după X secunde.
-- Rulat din linie de comandă: `godot --headless --script tools/bot_solver.gd`.
-- Un nivel livrat trebuie trecut de bot — dacă nu, fix nivel sau fix bot.
-
----
-
-## CHANGELOG + version number
-
-- `world-of-bloop/version.gd` — constantă `VERSION = "0.1.0"` (sursă unică).
-- `world-of-bloop/CHANGELOG.md` — format standard: versiune, dată, ce s-a schimbat.
-- La fiecare feature: MINOR++; la fiecare fix: PATCH++.
+**Status:** parțial implementat — pipe_connected() există, vizual de bază există.
+Lipsește: glow mai vizibil pentru activare, animație pulsată.
 
 ---
 
@@ -70,5 +104,12 @@ Inspirat dintr-un video YT cu Godot TileMap editor — nivelurile au nevoie de:
   vrea să poată construi vizual niveluri în Godot (TileMapLayer + nivel editor propriu)
 - Primul pas când venim la asta: înlocuiește polyline-ul de teren cu tile-uri reale
   → arată mult mai bine chiar și cu assets placeholder
+
+---
+
+## Sunete (prioritate medie)
+
+Nicio implementare deocamdată. Prioritate după hazards + pipe.
+Tipuri de sunet necesare: pick, attach, drop, break, smash, collect, win, lose.
 
 ---
