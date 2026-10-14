@@ -1,0 +1,119 @@
+{
+ "id": "balloon_lift",
+ "name": "Up We Go",
+ "order": 3,
+ "hint": "Pink balloons float up. Attach them high on a tower to lift it towards the pipe - but keep them away from the spikes!",
+ "world": {
+  "width": 1280,
+  "height": 720
+ },
+ "gravity": 900,
+ "terrain": [
+  {
+   "polyline": [
+    [
+     0,
+     100
+    ],
+    [
+     1280,
+     100
+    ]
+   ],
+   "fill": true
+  }
+ ],
+ "obstacles": [
+  {
+   "type": "spikes",
+   "pos": [
+    500,
+    470
+   ],
+   "size": [
+    70,
+    30
+   ]
+  },
+  {
+   "type": "spikes",
+   "pos": [
+    780,
+    470
+   ],
+   "size": [
+    70,
+    30
+   ]
+  }
+ ],
+ "nodes": [
+  {
+   "kind": "common",
+   "pos": [
+    600,
+    115
+   ],
+   "anchor": true
+  },
+  {
+   "kind": "common",
+   "pos": [
+    680,
+    115
+   ],
+   "anchor": true
+  },
+  {
+   "kind": "common",
+   "pos": [
+    640,
+    175
+   ]
+  }
+ ],
+ "strands": [
+  [
+   0,
+   1
+  ],
+  [
+   0,
+   2
+  ],
+  [
+   1,
+   2
+  ]
+ ],
+ "free_goo": [
+  {
+   "kind": "common",
+   "count": 9,
+   "x": [
+    60,
+    460
+   ]
+  },
+  {
+   "kind": "balloon",
+   "count": 4,
+   "x": [
+    820,
+    1150
+   ]
+  }
+ ],
+ "pipe": {
+  "pos": [
+   640,
+   560
+  ],
+  "radius": 46
+ },
+ "target": 3,
+ "ocd": {
+  "balls": 9,
+  "moves": 10
+ }
+}

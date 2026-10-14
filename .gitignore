@@ -1,0 +1,12 @@
+# Godot cache & editor state — nu se commit
+.godot/
+
+# Export builds
+export/
+*.exe
+*.pck
+*.apk
+
+# OS
+Thumbs.db
+.DS_Store

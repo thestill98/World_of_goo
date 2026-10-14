@@ -1,0 +1,22 @@
+{
+ "id": "burn_the_wall", "name": "Burn the Wall", "order": 4,
+ "hint": "The orange fire ball burns wood (and any goo next to it). Clear the wall, then build to the pipe.",
+ "world": {"width": 1280, "height": 720}, "gravity": 900,
+ "terrain": [ {"polyline": [[0, 120], [1280, 120]], "fill": true} ],
+ "obstacles": [
+   {"type": "wood", "pos": [700, 270], "size": [36, 300], "dynamic": false, "flammable": true}
+ ],
+ "nodes": [
+   {"kind": "common", "pos": [560, 135], "anchor": true},
+   {"kind": "common", "pos": [620, 135], "anchor": true},
+   {"kind": "common", "pos": [590, 190]}
+ ],
+ "strands": [[0, 1], [0, 2], [1, 2]],
+ "free_goo": [
+   {"kind": "common", "count": 8, "x": [60, 400]},
+   {"kind": "fire", "count": 1, "x": [420, 460]}
+ ],
+ "pipe": {"pos": [880, 190], "radius": 46},
+ "target": 3,
+ "ocd": {"balls": 6}
+}

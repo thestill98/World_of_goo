@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://c38xvp0wts8tn"]
+
+[ext_resource type="Script" uid="uid://bj0mkymk3cdko" path="res://scripts/Game.gd" id="1"]
+
+[node name="Game" type="Node2D" unique_id=1859018026]
+script = ExtResource("1")
+
+[node name="LevelRoot" type="Node2D" parent="." unique_id=371755791]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=531864406]
+position = Vector2(640, 360)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1324169436]
+
+[node name="HUD" type="VBoxContainer" parent="UI" unique_id=2002120001]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 760.0
+offset_bottom = 70.0
+
+[node name="Label" type="Label" parent="UI/HUD" unique_id=723074159]
+layout_mode = 2
+text = "Loading..."
+
+[node name="StatusLabel" type="Label" parent="UI/HUD" unique_id=2036847717]
+visible = false
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1498500822]

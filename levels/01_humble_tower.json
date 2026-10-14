@@ -1,0 +1,84 @@
+{
+ "id": "humble_tower",
+ "name": "Humble Tower",
+ "order": 1,
+ "hint": "Drag the green balls onto the structure. Build up to the pipe: a triangle is a strong shape.",
+ "world": {
+  "width": 1280,
+  "height": 720
+ },
+ "gravity": 900.0,
+ "terrain": [
+  {
+   "polyline": [
+	[
+	 0,
+	 120
+	],
+	[
+	 1280,
+	 120
+	]
+   ],
+   "fill": true
+  }
+ ],
+ "obstacles": [],
+ "nodes": [
+  {
+   "kind": "ivy",
+   "pos": [
+	860,
+	135
+   ],
+   "anchor": true
+  },
+  {
+   "kind": "ivy",
+   "pos": [
+	940,
+	135
+   ],
+   "anchor": true
+  },
+  {
+   "kind": "ivy",
+   "pos": [
+	900,
+	195
+   ]
+  }
+ ],
+ "strands": [
+  [
+   0,
+   1
+  ],
+  [
+   0,
+   2
+  ],
+  [
+   1,
+   2
+  ]
+ ],
+ "free_goo": [
+  {
+   "kind": "ivy",
+   "count": 12,
+   "x": [
+	80,
+	700
+   ]
+  }
+ ],
+ "pipe": {
+  "pos": [
+   900,
+   540
+  ],
+  "radius": 46
+ },
+ "target": 4
+}

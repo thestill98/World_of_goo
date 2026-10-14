@@ -1,0 +1,23 @@
+{
+ "id": "sticky_wall", "name": "Sticky Business", "order": 5,
+ "hint": "Yellow sticky balls glue themselves to the ground and walls - use them as anchors. Green ivy can be moved again.",
+ "world": {"width": 1280, "height": 720}, "gravity": 900,
+ "terrain": [
+   {"polyline": [[0, 120], [760, 120], [760, 330], [1280, 330]], "fill": true}
+ ],
+ "obstacles": [],
+ "nodes": [
+   {"kind": "common", "pos": [620, 135], "anchor": true},
+   {"kind": "common", "pos": [690, 135], "anchor": true},
+   {"kind": "common", "pos": [655, 195]}
+ ],
+ "strands": [[0, 1], [0, 2], [1, 2]],
+ "free_goo": [
+   {"kind": "common", "count": 8, "x": [60, 460]},
+   {"kind": "sticky", "count": 3, "x": [460, 560]},
+   {"kind": "ivy", "count": 4, "x": [200, 420]}
+ ],
+ "pipe": {"pos": [860, 440], "radius": 46},
+ "target": 4,
+ "ocd": {"balls": 6}
+}
